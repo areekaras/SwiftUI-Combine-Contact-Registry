@@ -7,7 +7,10 @@
 
 import Foundation
 
-struct Contact {
+struct Contact: Equatable, Identifiable, Sendable {
+    // Computed property to satisfy Identifiable using the unique email
+    var id: String { emailAddress }
+    
     let firstName: String
     let lastName: String
     let emailAddress: String
