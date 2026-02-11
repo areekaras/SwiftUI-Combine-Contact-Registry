@@ -17,9 +17,14 @@ final class ContactListViewModelTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: ContactListViewModel, service: ServiceSpy) {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {
         let service = ServiceSpy()
         let sut = ContactListViewModel(service: service)
+        
+        // As a Lead, we ensure the test suite is robust against memory leaks
+        trackForMemoryLeaks(service, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        
         return (sut, service)
     }
     
