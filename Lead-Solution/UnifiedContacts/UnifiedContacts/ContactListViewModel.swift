@@ -17,5 +17,9 @@ import Combine
 /// - Exposes formatted data to the `ContactListView` for presentation.
 ///
 class ContactListViewModel: ObservableObject {
+    let service: ContactListService
     
+    init(service: ContactListService) {
+        self.service = service
+    }
 }
