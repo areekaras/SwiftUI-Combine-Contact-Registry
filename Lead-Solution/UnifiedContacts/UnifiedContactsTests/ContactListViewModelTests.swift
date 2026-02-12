@@ -52,6 +52,17 @@ final class ContactListViewModelTests: XCTestCase {
         }
     }
     
+    func test_fetchContacts_setsLoadingStateCorrecty() async {
+        let (sut, _) = makeSUT()
+        
+        let task = Task { await sut.fetchContacts() }
+        
+        await Task.yield()
+        
+        XCTAssertEqual(sut.state, .loading)
+        
+        await task.value
+    }
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {
