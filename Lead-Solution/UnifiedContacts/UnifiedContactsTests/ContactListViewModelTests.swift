@@ -8,11 +8,20 @@
 import XCTest
 @testable import UnifiedContacts
 
+@MainActor
 final class ContactListViewModelTests: XCTestCase {
     func test_init_doesNotMessageService() {
         let (_, service) = makeSUT()
         
         XCTAssertTrue(service.messages.isEmpty)
+    }
+    
+    func test_fetchContacts_requestsDataFromService() async {
+        let (sut, service) = makeSUT()
+        
+        await sut.fetchContacts()
+        
+        XCTAssertEqual(service.messages, [.fetchContacts])
     }
     
     // MARK: - Helpers
