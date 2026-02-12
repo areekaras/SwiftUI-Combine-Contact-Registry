@@ -38,6 +38,20 @@ final class ContactListViewModelTests: XCTestCase {
         }
     }
     
+    func test_fetchContacts_deliversErrorOnServiceError() async {
+        let (sut, service) = makeSUT()
+        let error = NSError(domain: "TestError", code: 0)
+        service.fetchResult = .failure(error)
+        
+        await sut.fetchContacts()
+        
+        if case .error(let message) = sut.state {
+            XCTAssertFalse(message.isEmpty, "Error message should not be empty")
+        } else {
+            XCTFail("Expected .error state, got \(sut.state) instead")
+        }
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {
