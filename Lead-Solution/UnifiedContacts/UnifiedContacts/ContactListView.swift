@@ -25,12 +25,28 @@ struct ContactListView: View {
         NavigationView {
             Group {
                 switch viewModel.state {
+                case .idle, .loading:
+                    ProgressView("Fetching contacts...")
                 case .success(let contacts):
-                    List(contacts) { contact in
-                        ContactRow(contact: contact)
+                    if contacts.isEmpty {
+                        Text("No contacts found.")
+                            .foregroundColor(.secondary)
+                    } else {
+                        List(contacts) { contact in
+                            ContactRow(contact: contact)
+                        }
                     }
-                default:
-                    ProgressView()
+                case .error(let message):
+                    VStack(spacing: 16) {
+                        Text(message)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                        Button("Try Again") {
+                            Task { await viewModel.fetchContacts() }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
                 }
             }
             .navigationTitle("Contacts")
