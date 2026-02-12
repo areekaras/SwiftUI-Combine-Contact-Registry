@@ -63,6 +63,16 @@ final class ContactListViewModelTests: XCTestCase {
         
         await task.value
     }
+    
+    func test_fetchContacts_deliversEmptyStateOnNoContacts() async {
+        let (sut, service) = makeSUT()
+        service.fetchResult = .success([])
+        
+        await sut.fetchContacts()
+        
+        XCTAssertEqual(sut.state, .success([]))
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {
