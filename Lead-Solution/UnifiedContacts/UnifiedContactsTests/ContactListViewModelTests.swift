@@ -24,6 +24,20 @@ final class ContactListViewModelTests: XCTestCase {
         XCTAssertEqual(service.messages, [.fetchContacts])
     }
     
+    func test_fetchContacts_deliversContactsOnSuccess() async {
+        let contacts = [Contact(firstName: "Shibili", lastName: "Areekara", emailAddress: "test@test.com")]
+        let (sut, service) = makeSUT()
+        service.fetchResult = .success(contacts)
+        
+        await sut.fetchContacts()
+        
+        if case .success(let receivedContacts) = sut.state {
+            XCTAssertEqual(receivedContacts, contacts)
+        } else {
+            XCTFail("Expected .success state, got \(sut.state) instead")
+        }
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {

@@ -18,14 +18,29 @@ import Combine
 ///
 
 @MainActor
-class ContactListViewModel: ObservableObject {
-    let service: ContactListService
+final class ContactListViewModel: ObservableObject {
+    @Published private(set) var state: ViewState = .idle
+    
+    enum ViewState: Equatable {
+        case idle
+        case loading
+        case success([Contact])
+        case error(String)
+    }
+
+    private let service: ContactListService
     
     init(service: ContactListService) {
         self.service = service
     }
     
     func fetchContacts() async {
-        _ = try? await service.fetchContacts()
+        state = .loading
+        do {
+            let contacts = try await service.fetchContacts()
+            state = .success(contacts)
+        } catch {
+            
+        }
     }
 }
