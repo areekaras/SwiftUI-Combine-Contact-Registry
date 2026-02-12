@@ -72,7 +72,7 @@ final class ContactListViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.state, .success([]))
     }
-    
+        
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ContactListViewModel, service: ServiceSpy) {

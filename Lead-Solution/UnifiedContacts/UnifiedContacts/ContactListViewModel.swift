@@ -40,8 +40,7 @@ final class ContactListViewModel: ObservableObject {
             let contacts = try await service.fetchContacts()
             state = .success(contacts)
         } catch {
-            // As a Lead, you might eventually map specific errors to
-            // user-friendly strings here.
+            // Map specific errors to user-friendly strings here.
             state = .error("Failed to load contacts. Please try again.")
         }
     }
